@@ -77,6 +77,7 @@ BAUD_RATE_MAP = {
 DYNAMIXEL_MODELS = {
     1220: 'XC330-T288-T',
     1080: 'XC430-T240BB-T',
+    1240: 'XC330-M288-T',
 }
 
 def dynamixel_cleanup_handler():
