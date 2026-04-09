@@ -42,13 +42,13 @@ To get started with Orca Core, follow these steps:
 
 3. **Check the configuration file**:
 
-    - Review the config file (e.g., `orca_core/models/orcahand_v1_right/config.yaml`) and make sure it matches your hardware setup.
+    - Review the config file (e.g., `orca_core/models/orcahand_v1_left/config.yaml`) and make sure it matches your hardware setup.
 
 4. **Run the tension and calibration scripts**:
 
     ```sh
-    uv run python scripts/tension.py orca_core/models/orcahand_v1_right
-    uv run python scripts/calibrate.py orca_core/models/orcahand_v1_right
+    uv run python scripts/tension.py orca_core/models/orcahand_v1_left
+    uv run python scripts/calibrate.py orca_core/models/orcahand_v1_left
     ```
 
     Replace the path with your specific hand model folder if needed.
@@ -56,7 +56,7 @@ To get started with Orca Core, follow these steps:
 5. **Move the hand to the neutral position**:
 
     ```sh
-    uv run python scripts/neutral.py orca_core/models/orcahand_v1_right
+    uv run python scripts/neutral.py orca_core/models/orcahand_v1_left
     ```
 
 6. **Example usage: test.py**
@@ -67,7 +67,7 @@ To get started with Orca Core, follow these steps:
     from orca_core import OrcaHand
     import time
 
-    hand = OrcaHand("orca_core/models/orcahand_v1_right")
+    hand = OrcaHand("orca_core/models/orcahand_v1_left")
     status = hand.connect()
     print(status)
     if not status[0]:
