@@ -216,7 +216,8 @@ class OrcaHand(BaseHand):
             if self._motor_client is None:
                 return True, "Disconnected successfully"
             with self._motor_lock:
-                self.disable_torque()
+                # Avoid infinite retries during shutdown if bus communication is lost.
+                self.disable_torque(retries=0)
                 time.sleep(0.1)
                 self._motor_client.disconnect()
             return True, "Disconnected successfully"
@@ -242,16 +243,28 @@ class OrcaHand(BaseHand):
         with self._motor_lock:
             self._motor_client.set_torque_enabled(motor_ids, True)
 
-    def disable_torque(self, motor_ids: List[int] = None):
+    def disable_torque(
+        self,
+        motor_ids: List[int] = None,
+        retries: int = -1,
+        retry_interval: float = 0.25,
+    ):
         """Disable torque on the specified motors.
 
         Args:
             motor_ids: List of motor IDs to disable. Defaults to all motors.
+            retries: Number of retry attempts. ``<0`` retries indefinitely.
+            retry_interval: Delay between retries in seconds.
         """
         motor_ids = self.config.motor_ids if motor_ids is None else motor_ids
 
         with self._motor_lock:
-            self._motor_client.set_torque_enabled(motor_ids, False)
+            self._motor_client.set_torque_enabled(
+                motor_ids,
+                False,
+                retries=retries,
+                retry_interval=retry_interval,
+            )
 
     def set_max_current(self, current: Union[float, List[float]]):
         """Set the maximum allowable current for the motors.

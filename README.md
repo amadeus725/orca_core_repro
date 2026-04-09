@@ -42,13 +42,13 @@ To get started with Orca Core, follow these steps:
 
 3. **Check the configuration file**:
 
-    - Review the config file (e.g., `orca_core/models/orcahand_v1_left/config.yaml`) and make sure it matches your hardware setup.
+    - Review the config file (e.g., `orca_core/models/v1/orcahand_left/config.yaml`) and make sure it matches your hardware setup.
 
 4. **Run the tension and calibration scripts**:
 
     ```sh
-    uv run python scripts/tension.py orca_core/models/orcahand_v1_left
-    uv run python scripts/calibrate.py orca_core/models/orcahand_v1_left
+    uv run python scripts/tension.py orca_core/models/v1/orcahand_left/config.yaml
+    uv run python scripts/calibrate.py orca_core/models/v1/orcahand_left/config.yaml
     ```
 
     Replace the path with your specific hand model folder if needed.
@@ -56,7 +56,7 @@ To get started with Orca Core, follow these steps:
 5. **Move the hand to the neutral position**:
 
     ```sh
-    uv run python scripts/neutral.py orca_core/models/orcahand_v1_left
+    uv run python scripts/neutral.py orca_core/models/v1/orcahand_left/config.yaml
     ```
 
 6. **Example usage: test.py**
@@ -67,7 +67,7 @@ To get started with Orca Core, follow these steps:
     from orca_core import OrcaHand
     import time
 
-    hand = OrcaHand("orca_core/models/orcahand_v1_left")
+    hand = OrcaHand("orca_core/models/v1/orcahand_left/config.yaml")
     status = hand.connect()
     print(status)
     if not status[0]:
@@ -116,6 +116,21 @@ Make sure the `port` field in your `config.yaml` matches your operating system:
 |-------|---------------------------------|
 | Linux | `/dev/ttyUSB0`                  |
 | macOS | `/dev/tty.usbserial-XXXXXXXX`   |
+
+### Verify Joint Sign Mapping
+
+If a joint moves in the wrong direction, validate the sign in `joint_to_motor_map`
+with the built-in checker:
+
+```sh
+uv run python scripts/verify_joint_sign.py orca_core/models/v1/orcahand_left/config.yaml
+```
+
+To test only one joint (for example `ring_abd`):
+
+```sh
+uv run python scripts/verify_joint_sign.py orca_core/models/v1/orcahand_left/config.yaml --joint ring_abd
+```
 
 ---
 
